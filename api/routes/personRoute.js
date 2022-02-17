@@ -5,4 +5,6 @@ const router = Router()
 
 router.get('/pessoas', PersonController.getAllPeople);
 
+router.get('/pessoas/:id', PersonController.getOnePerson);
+
 module.exports = router;
