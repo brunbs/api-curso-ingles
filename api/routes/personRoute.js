@@ -10,4 +10,8 @@ router.get('/pessoas/:id', PersonController.getOnePerson);
 
 router.post('/pessoas', PersonController.createPerson);
 
+router.put('/pessoas/:id', PersonController.updatePerson);
+
+router.delete('/pessoas/:id', PersonController.deletePerson);
+
 module.exports = router;

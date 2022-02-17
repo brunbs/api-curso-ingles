@@ -34,6 +34,40 @@ class PersonController {
             return res.status(500).json(error.message);
         }
     }
+
+    static async updatePerson(req, res) {
+        const { id } = req.params;
+        const receivedDataToUpdate = req.body;
+        try {
+            await database.Person.update(receivedDataToUpdate, {
+                where: {
+                    id: Number(id)
+                }
+            });
+            const updatedPerson = await database.Person.findOne({ 
+                where: { 
+                    id: Number(id) 
+                }
+            });
+            return res.status(200).json(updatedPerson);
+        } catch (error) {
+            return res.status(500).json(error.message);
+        }
+    }
+
+    static async deletePerson(req, res) {
+        const { id } = req.params;
+        try {
+            await database.Person.destroy({
+                where: {
+                    id: Number(id)
+                }
+            }); 
+            return res.status(200).json({ mensagem: `id ${id} deletado.`})
+        } catch (error) {
+            return res.status(500).json(error.message);
+        }
+    }
 }
 
 module.exports = PersonController;
