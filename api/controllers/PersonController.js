@@ -20,8 +20,8 @@ class PersonController {
                 }
             });
             return res.status(200).json(person);
-        } catch (error)  {
-            return res.status(500).json(error.message);
+        } catch (error) {
+            return res.status(500).send(error.message);
         }
     }
 

@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       Person.hasMany(models.Class, {
         foreignKey: 'teacher_id'
       })
-      Person.hasMany(models.Level, {
+      Person.hasMany(models.Registration, {
         foreignKey: 'student_id'
       })
     }
