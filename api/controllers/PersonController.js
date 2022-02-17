@@ -12,7 +12,7 @@ class PersonController {
     }
 
     static async getOnePerson(req, res) {
-        try{
+        try {
             const { id } = req.params;
             const person = await database.Person.findOne({ 
                 where: { 
@@ -21,6 +21,16 @@ class PersonController {
             });
             return res.status(200).json(person);
         } catch (error)  {
+            return res.status(500).json(error.message);
+        }
+    }
+
+    static async createPerson(req, res) {
+        const receivedPerson = req.body;
+        try {
+            const createdPerson = await database.Person.create(receivedPerson);
+            return res.status(201).json(createdPerson);
+        } catch (error) {
             return res.status(500).json(error.message);
         }
     }
