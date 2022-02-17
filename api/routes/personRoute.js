@@ -17,4 +17,10 @@ router.delete('/pessoas/:id', PersonController.deletePerson);
 
 router.get('/pessoas/:studentId/matriculas/:registrationId', PersonController.getOneRegistration);
 
+router.post('/pessoas/:studentId/matriculas/', PersonController.createRegistration);
+
+router.put('/pessoas/:studentId/matriculas/:registrationId', PersonController.updateRegistration);
+
+router.delete('/pessoas/:studentId/matriculas/:registrationId', PersonController.deleteRegistration);
+
 module.exports = router;
