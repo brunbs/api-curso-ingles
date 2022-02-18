@@ -14,4 +14,6 @@ router.put('/turmas/:id', ClassController.updateClass);
 
 router.delete('/turmas/:id', ClassController.deleteClass);
 
+router.post('/turmas/:id/restaura', ClassController.restoreClass);
+
 module.exports = router;

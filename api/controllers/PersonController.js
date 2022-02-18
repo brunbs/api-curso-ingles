@@ -144,6 +144,21 @@ class PersonController {
             res.status(500).json(error.message);
         }
     }
+
+    static async restoreRegistration(req, res) {
+        const { studentId, registrationId } = req.params;
+        try {
+            await database.Registration.restore({
+                where: {
+                    id: Number(registrationId),
+                    student_id: Number(studentId)
+                }
+            });
+            return res.status(200).json({menssagem: `${registrationId} restaurado`})
+        } catch(error) {
+            res.status(500).json(error.message);
+        }
+    }
 }
 
 module.exports = PersonController;
