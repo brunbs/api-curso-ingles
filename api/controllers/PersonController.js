@@ -196,6 +196,23 @@ class PersonController {
             return res.status(500).json(error.message);
         }
     }
+
+    static async cancelDeactivatedStudentRegistrations(req, res) {
+        const { studentId } = req.params;
+        try {
+            await database.Person.update({ active: false }, { 
+                where: 
+                    { id: Number(studentId) } 
+            });
+            await database.Registration.update({ status: 'cancelado' }, { 
+                where: { student_id: Number(studentId) 
+            }});
+            return res.status(200).json({ message: `Matrículas ref. estudante ${studentId} canceladas` });
+        } catch (error) {
+            return res.status(500).json(error.message);
+        }
+    }
+
 }
 
 module.exports = PersonController;

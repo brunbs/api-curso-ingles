@@ -23,6 +23,8 @@ router.post('/pessoas/:studentId/matriculas/', PersonController.createRegistrati
 
 router.post('/pessoas/:id/restaura', PersonController.restorePerson);
 
+router.post('/pessoas/:studentId/cancela', PersonController.cancelDeactivatedStudentRegistrations);
+
 router.post('/pessoas/:studentId/matriculas/:registrationId/restaura', PersonController.restoreRegistration);
 
 router.put('/pessoas/:studentId/matriculas/:registrationId', PersonController.updateRegistration);
