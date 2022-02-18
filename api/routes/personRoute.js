@@ -15,6 +15,8 @@ router.get('/pessoas/:studentId/matriculas', PersonController.getStudentRegistra
 
 router.get('/pessoas/:studentId/matriculas/:registrationId', PersonController.getOneRegistration);
 
+router.get('/pessoas/matriculas/:classId/confirmadas', PersonController.getRegistrationsByClass);
+
 router.post('/pessoas', PersonController.createPerson);
 
 router.post('/pessoas/:studentId/matriculas/', PersonController.createRegistration);

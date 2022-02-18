@@ -180,6 +180,22 @@ class PersonController {
             return res.status(500).json(error.message);
         }
     }
+
+    static async getRegistrationsByClass(req, res) {
+        const { classId } = req.params;
+        try {
+            const classRegistrations = await database.Registration.findAndCountAll({
+                where: {
+                    class_id: Number(classId),
+                    status: 'confirmado'
+                },
+                order:[['student_id', 'ASC']]
+            });
+            return res.status(200).json(classRegistrations);
+        } catch (error) {
+            return res.status(500).json(error.message);
+        }
+    }
 }
 
 module.exports = PersonController;
