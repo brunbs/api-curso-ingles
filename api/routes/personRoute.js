@@ -5,7 +5,9 @@ const PersonController = require('../controllers/PersonController');
 
 const router = Router()
 
-router.get('/pessoas', PersonController.getAllPeople);
+router.get('/pessoas', PersonController.getAllActivePeople);
+
+router.get('/pessoas/todos', PersonController.getAllPeople);
 
 router.get('/pessoas/:id', PersonController.getOnePerson);
 
