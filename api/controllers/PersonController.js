@@ -169,6 +169,17 @@ class PersonController {
             res.status(500).json(error.message);
         }
     }
+
+    static async getStudentRegistrations(req, res) {
+        const { studentId } = req.params;
+        try {
+            const student = await database.Person.findOne({ where: {id: Number(studentId)}});
+            const registrations = await student.getConfirmedRegistrations();
+            return res.status(200).json(registrations);
+        } catch (error) {
+            return res.status(500).json(error.message);
+        }
+    }
 }
 
 module.exports = PersonController;
