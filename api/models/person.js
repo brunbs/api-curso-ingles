@@ -20,7 +20,15 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Person.init({
-    name: DataTypes.STRING,
+    name: {
+      type: DataTypes.STRING,
+        validate: {
+            len: {
+              args: [4],
+              msg: 'Nome deve ter ao menos 4 caracteres'
+            }
+          }
+      },
     active: DataTypes.BOOLEAN,
     email: {
       type: DataTypes.STRING,
