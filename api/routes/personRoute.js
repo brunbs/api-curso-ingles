@@ -23,4 +23,6 @@ router.put('/pessoas/:studentId/matriculas/:registrationId', PersonController.up
 
 router.delete('/pessoas/:studentId/matriculas/:registrationId', PersonController.deleteRegistration);
 
+router.post('/pessoas/:id/restaura', PersonController.restorePerson);
+
 module.exports = router;
