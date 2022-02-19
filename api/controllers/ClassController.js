@@ -10,7 +10,7 @@ class ClassController {
         data_inicial ? where.starting_date[Op.gte] = data_inicial : null
         data_final ? where.starting_date[Op.lte] = data_final : null
         try {
-            const allClasses = await database.Class.findAll({ where });
+            const allClasses = await database.Class.getAllData(where);
             return res.status(200).json(allClasses);
         } catch (error) {
             return res.status(500).json(error.message);
