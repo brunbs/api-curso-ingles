@@ -1,4 +1,3 @@
-//const database = require('../models');
 const { PeopleServices } = require('../services');
 const peopleServices = new PeopleServices();
 
@@ -24,9 +23,9 @@ class PersonController {
     }
 
     static async getOnePerson(req, res) {
+        const { id } = req.params;
         try {
-            const { id } = req.params;
-            const person = await peopleServices.getData(Number(id));
+            const person = await peopleServices.getData({id});
             return res.status(200).json(person);
         } catch (error) {
             return res.status(500).send(error.message);
@@ -34,9 +33,9 @@ class PersonController {
     }
 
     static async createPerson(req, res) {
-        const receivedPerson = req.body;
+        const newPerson = req.body;
         try {
-            const createdPerson = await database.Person.create(receivedPerson);
+            const createdPerson = await peopleServices.createData(newPerson);
             return res.status(201).json(createdPerson);
         } catch (error) {
             return res.status(500).json(error.message);
@@ -47,16 +46,8 @@ class PersonController {
         const { id } = req.params;
         const receivedDataToUpdate = req.body;
         try {
-            await database.Person.update(receivedDataToUpdate, {
-                where: {
-                    id: Number(id)
-                }
-            });
-            const updatedPerson = await database.Person.findOne({ 
-                where: { 
-                    id: Number(id) 
-                }
-            });
+            await peopleServices.updateData(receivedDataToUpdate, Number(id));
+            const updatedPerson = await peopleServices.getData({id});
             return res.status(200).json(updatedPerson);
         } catch (error) {
             return res.status(500).json(error.message);
@@ -66,11 +57,7 @@ class PersonController {
     static async deletePerson(req, res) {
         const { id } = req.params;
         try {
-            await database.Person.destroy({
-                where: {
-                    id: Number(id)
-                }
-            }); 
+            await peopleServices.deleteData(Number(id));
             return res.status(200).json({ mensagem: `id ${id} deletado.`})
         } catch (error) {
             return res.status(500).json(error.message);
@@ -80,12 +67,8 @@ class PersonController {
     static async restorePerson(req, res) {
         const { id } = req.params;
         try {
-            await database.Person.restore({
-                where: {
-                    id: Number(id)
-                }
-            });
-            return res.status(200).json({menssagem: `${id} restaurado`})
+            const restoredPerson = await peopleServices.restoreData(Number(id));
+            return res.status(200).json(restoredPerson);
         } catch(error) {
             res.status(500).json(error.message);
         }
@@ -94,8 +77,7 @@ class PersonController {
     static async getStudentRegistrations(req, res) {
         const { studentId } = req.params;
         try {
-            const student = await database.Person.findOne({ where: {id: Number(studentId)}});
-            const registrations = await student.getConfirmedRegistrations();
+            const registrations = await peopleServices.getStudentRegistrations({ id: Number(studentId) });
             return res.status(200).json(registrations);
         } catch (error) {
             return res.status(500).json(error.message);

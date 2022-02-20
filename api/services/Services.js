@@ -26,7 +26,7 @@ class Services {
     }
 
     async deleteData(id) {
-        return database[this.nomeDoModelo].destroy({ where: { id: id } })
+        return database[this.modelName].destroy({ where: { id: id } })
     }
 
     async findAndCount(where = {}, aggregators) {

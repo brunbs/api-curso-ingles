@@ -21,6 +21,11 @@ class PeopleServices extends Services {
             await this.registrations.updateSomeData({ status: 'cancelado' }, { student_id: studentId }, { transaction: dbTransaction });
         });
     }
+
+    async getStudentRegistrations(where ={}) {
+        const registrations = await database[this.modelName].findOne({ where: { ...where } } );
+        return registrations.getConfirmedRegistrations();
+    }
     
 }
 

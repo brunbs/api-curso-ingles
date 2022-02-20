@@ -1,6 +1,8 @@
-const database = require('../models');
+const { ClassesServices } = require('../services');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
+
+const classesServices = new ClassesServices();
 
 class ClassController {
     static async getAllClasses(req, res) {
@@ -10,7 +12,7 @@ class ClassController {
         data_inicial ? where.starting_date[Op.gte] = data_inicial : null
         data_final ? where.starting_date[Op.lte] = data_final : null
         try {
-            const allClasses = await database.Class.getAllData(where);
+            const allClasses = await classesServices.getAllData(where);
             return res.status(200).json(allClasses);
         } catch (error) {
             return res.status(500).json(error.message);
@@ -18,13 +20,9 @@ class ClassController {
     }
 
     static async getOneClass(req, res) {
+        const { id } = req.params;
         try {
-            const { id } = req.params;
-            const foundClass = await database.Class.findOne({
-                where: {
-                    id: Number(id)
-                }
-            });
+            const foundClass = await classesServices.getData({ id });
             return res.status(200).json(foundClass);
         } catch (error) {
             return res.status(500).json(error.message);
@@ -32,9 +30,9 @@ class ClassController {
     }
 
     static async createClass(req, res) {
-        const receivedClass = req.body;
+        const newClass = req.body;
         try {
-            const createdClass = await database.Class.create(receivedClass);
+            const createdClass = await classesServices.createData(newClass);
             return res.status(201).json(createdClass);
         } catch (error) {
             return res.status(500).json(error.message);
@@ -45,16 +43,8 @@ class ClassController {
         const { id } = req.params;
         const receivedDataToUpdate = req.body;
         try {
-            await database.Class.update(receivedDataToUpdate, {
-                where: {
-                    id: Number(id)
-                }
-            });
-            const updatedClass = await database.Level.findOne({
-                where: {
-                    id: Number(id)
-                }
-            })
+            await classesServices.updateData(receivedDataToUpdate, id);
+            const updatedClass = await classesServices.getData({ id });
             return res.status(200).json(updatedClass);
         } catch (error) {
             return res.status(500).json(error.message);
@@ -64,12 +54,8 @@ class ClassController {
     static async deleteClass(req, res) {
         const { id } = req.params;
         try {
-            await database.Class.destroy({
-                where: {
-                    id: Number(id)
-                }
-            });
-            return res.status(200).json( { menssagem: `${id} deletado.`} );
+            await classesServices.deleteData(id);
+            return res.status(200).json( { mensagem: `${id} deletado.`} );
         } catch (error) {
             return res.status(500).json(error.message);
         }
@@ -78,11 +64,7 @@ class ClassController {
     static async restoreClass(req, res) {
         const { id } = req.params;
         try {
-            await database.Class.restore({
-                where: {
-                    id: Number(id)
-                }
-            });
+            await classesServices.restoreData(id);
             return res.status(200).json({menssagem: `${id} restaurado`})
         } catch(error) {
             res.status(500).json(error.message);

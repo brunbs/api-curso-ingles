@@ -1,39 +1,25 @@
 const { Router } = require('express');
-const { route } = require('express/lib/application');
-const { getOneRegistration } = require('../controllers/PersonController');
 const PersonController = require('../controllers/PersonController');
+const RegistrationController = require('../controllers/RegistrationController');
 
 const router = Router()
 
-router.get('/pessoas', PersonController.getAllPeople);
-
-router.get('/pessoas/ativas', PersonController.getAllActivePeople);
-
-router.get('/pessoas/:id', PersonController.getOnePerson);
-
-router.get('/pessoas/:studentId/matriculas', PersonController.getStudentRegistrations);
-
-router.get('/pessoas/:studentId/matriculas/:registrationId', PersonController.getOneRegistration);
-
-router.get('/pessoas/matriculas/:classId/confirmadas', PersonController.getRegistrationsByClass);
-
-router.post('/pessoas', PersonController.createPerson);
-
-router.post('/pessoas/:studentId/matriculas/', PersonController.createRegistration);
-
-router.post('/pessoas/:id/restaura', PersonController.restorePerson);
-
-router.post('/pessoas/:studentId/cancela', PersonController.cancelDeactivatedStudentRegistrations);
-
-router.post('/pessoas/:studentId/matriculas/:registrationId/restaura', PersonController.restoreRegistration);
-
-router.put('/pessoas/:studentId/matriculas/:registrationId', PersonController.updateRegistration);
-
-router.put('/pessoas/:id', PersonController.updatePerson);
-
-router.delete('/pessoas/:studentId/matriculas/:registrationId', PersonController.deleteRegistration);
-
-router.delete('/pessoas/:id', PersonController.deletePerson);
+router
+    .get('/pessoas', PersonController.getAllPeople)
+    .get('/pessoas/ativas', PersonController.getAllActivePeople)
+    .get('/pessoas/:id', PersonController.getOnePerson)
+    .get('/pessoas/:studentId/matriculas', PersonController.getStudentRegistrations)
+    .get('/pessoas/:studentId/matriculas/:registrationId', RegistrationController.getOneRegistration)
+    .get('/pessoas/matriculas/:classId/confirmadas', RegistrationController.getRegistrationsByClass)
+    .post('/pessoas', PersonController.createPerson)
+    .post('/pessoas/:studentId/matriculas/', RegistrationController.createRegistration)
+    .post('/pessoas/:id/restaura', PersonController.restorePerson)
+    .post('/pessoas/:studentId/cancela', PersonController.cancelDeactivatedStudentRegistrations)
+    .post('/pessoas/:studentId/matriculas/:registrationId/restaura', RegistrationController.restoreRegistration)
+    .put('/pessoas/:studentId/matriculas/:registrationId', RegistrationController.updateRegistration)
+    .put('/pessoas/:id', PersonController.updatePerson)
+    .delete('/pessoas/:studentId/matriculas/:registrationId', RegistrationController.deleteRegistration)
+    .delete('/pessoas/:id', PersonController.deletePerson)
 
 
 

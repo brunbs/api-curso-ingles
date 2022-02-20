@@ -36,6 +36,7 @@ class LevelController {
         const receivedDataToUpdate = req.body;
         try {
             await levelsServices.updateData(receivedDataToUpdate, id);
+            const updatedLevel = await levelsServices.getData({id});
             return res.status(200).json(updatedLevel);
         } catch (error) {
             return res.status(500).json(error.message);
