@@ -47,7 +47,7 @@ class LevelController {
         const { id } = req.params;
         try {
             await levelsServices.deleteData(id);
-            return res.status(200).json( { mensagem: `${id} deletado.`} );
+            return res.status(200).json( { message: `${id} deleted.`} );
         } catch (error) {
             return res.status(500).json(error.message);
         }
@@ -57,7 +57,7 @@ class LevelController {
         const { id } = req.params;
         try {
             await levelsServices.restoreData(id);
-            return res.status(200).json({mensagem: `${id} restaurado`})
+            return res.status(200).json( { message: `${id} restored` } )
         } catch(error) {
             res.status(500).json(error.message);
         }

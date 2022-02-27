@@ -40,7 +40,7 @@ class RegistrationController {
         const { registrationId } = req.params;
         try {
             await registrationsServices.deleteData(Number(registrationId));
-            return res.status(200).json({ mensagem: `id ${registrationId} deletado.`})
+            return res.status(200).json( { message: `id ${registrationId} deleted.` } )
         } catch (error) {
             return res.status(500).json(error.message);
         }
@@ -50,7 +50,7 @@ class RegistrationController {
         const { registrationId } = req.params;
         try {
             await registrationsServices.restoreData(Number(registrationId));
-            return res.status(200).json({menssagem: `${registrationId} restaurado`})
+            return res.status(200).json( { message: `${registrationId} restored` } )
         } catch(error) {
             res.status(500).json(error.message);
         }

@@ -6,11 +6,11 @@ const classesServices = new ClassesServices();
 
 class ClassController {
     static async getAllClasses(req, res) {
-        const { data_inicial, data_final } = req.query;
+        const { date_beginning, date_end } = req.query;
         const where = {};
-        data_inicial || data_final ? where.starting_date = {} : null
-        data_inicial ? where.starting_date[Op.gte] = data_inicial : null
-        data_final ? where.starting_date[Op.lte] = data_final : null
+        date_beginning || date_end ? where.starting_date = {} : null
+        date_beginning ? where.starting_date[Op.gte] = date_beginning : null
+        date_end ? where.starting_date[Op.lte] = date_end : null
         try {
             const allClasses = await classesServices.getAllData(where);
             return res.status(200).json(allClasses);
@@ -55,7 +55,7 @@ class ClassController {
         const { id } = req.params;
         try {
             await classesServices.deleteData(id);
-            return res.status(200).json( { mensagem: `${id} deletado.`} );
+            return res.status(200).json( { message: `${id} deleted.`} );
         } catch (error) {
             return res.status(500).json(error.message);
         }
@@ -65,7 +65,7 @@ class ClassController {
         const { id } = req.params;
         try {
             await classesServices.restoreData(id);
-            return res.status(200).json({menssagem: `${id} restaurado`})
+            return res.status(200).json( { message: `${id} restored` } )
         } catch(error) {
             res.status(500).json(error.message);
         }

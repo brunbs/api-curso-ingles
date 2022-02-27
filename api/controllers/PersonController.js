@@ -58,7 +58,7 @@ class PersonController {
         const { id } = req.params;
         try {
             await peopleServices.deleteData(Number(id));
-            return res.status(200).json({ mensagem: `id ${id} deletado.`})
+            return res.status(200).json({ message: `id ${id} deleted.`})
         } catch (error) {
             return res.status(500).json(error.message);
         }
@@ -88,7 +88,7 @@ class PersonController {
         const { studentId } = req.params;
         try {
             await peopleServices.cancelPersonAndRegistrations(Number(studentId));
-            return res.status(200).json({ message: `Matrículas ref. estudante ${studentId} canceladas` });
+            return res.status(200).json({ message: `Student's ${studentId} registrations canceled` });
         } catch (error) {
             return res.status(500).json(error.message);
         }

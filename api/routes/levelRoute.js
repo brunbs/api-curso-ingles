@@ -4,10 +4,10 @@ const LevelController = require('../controllers/LevelController');
 const router = Router()
 
 router
-    .get('/niveis', LevelController.getAllLevels)
-    .get('/niveis/:id', LevelController.getOneLevel)
-    .post('/niveis', LevelController.createLevel)
-    .post('/niveis/:id/restaura', LevelController.restoreLevel)
-    .put('/niveis/:id', LevelController.updateLevel)
-    .delete('/niveis/:id', LevelController.deleteLevel)
+    .get('/levels', LevelController.getAllLevels)
+    .get('/levels/:id', LevelController.getOneLevel)
+    .post('/levels', LevelController.createLevel)
+    .post('/levels/:id/restore', LevelController.restoreLevel)
+    .put('/levels/:id', LevelController.updateLevel)
+    .delete('/levels/:id', LevelController.deleteLevel)
 module.exports = router;

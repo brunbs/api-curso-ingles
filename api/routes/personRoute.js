@@ -5,22 +5,20 @@ const RegistrationController = require('../controllers/RegistrationController');
 const router = Router()
 
 router
-    .get('/pessoas', PersonController.getAllPeople)
-    .get('/pessoas/ativas', PersonController.getAllActivePeople)
-    .get('/pessoas/:id', PersonController.getOnePerson)
-    .get('/pessoas/:studentId/matriculas', PersonController.getStudentRegistrations)
-    .get('/pessoas/:studentId/matriculas/:registrationId', RegistrationController.getOneRegistration)
-    .get('/pessoas/matriculas/:classId/confirmadas', RegistrationController.getRegistrationsByClass)
-    .post('/pessoas', PersonController.createPerson)
-    .post('/pessoas/:studentId/matriculas/', RegistrationController.createRegistration)
-    .post('/pessoas/:id/restaura', PersonController.restorePerson)
-    .post('/pessoas/:studentId/cancela', PersonController.cancelDeactivatedStudentRegistrations)
-    .post('/pessoas/:studentId/matriculas/:registrationId/restaura', RegistrationController.restoreRegistration)
-    .put('/pessoas/:studentId/matriculas/:registrationId', RegistrationController.updateRegistration)
-    .put('/pessoas/:id', PersonController.updatePerson)
-    .delete('/pessoas/:studentId/matriculas/:registrationId', RegistrationController.deleteRegistration)
-    .delete('/pessoas/:id', PersonController.deletePerson)
-
-
+    .get('/people', PersonController.getAllPeople)
+    .get('/people/active', PersonController.getAllActivePeople)
+    .get('/people/:id', PersonController.getOnePerson)
+    .get('/people/:studentId/registrations', PersonController.getStudentRegistrations)
+    .get('/people/:studentId/registrations/:registrationId', RegistrationController.getOneRegistration)
+    .get('/people/registrations/:classId/confirmed', RegistrationController.getRegistrationsByClass)
+    .post('/people', PersonController.createPerson)
+    .post('/people/:studentId/registrations/', RegistrationController.createRegistration)
+    .post('/people/:id/restore', PersonController.restorePerson)
+    .post('/people/:studentId/cancel', PersonController.cancelDeactivatedStudentRegistrations)
+    .post('/people/:studentId/registrations/:registrationId/restore', RegistrationController.restoreRegistration)
+    .put('/people/:studentId/registrations/:registrationId', RegistrationController.updateRegistration)
+    .put('/people/:id', PersonController.updatePerson)
+    .delete('/people/:studentId/registrations/:registrationId', RegistrationController.deleteRegistration)
+    .delete('/people/:id', PersonController.deletePerson)
 
 module.exports = router;

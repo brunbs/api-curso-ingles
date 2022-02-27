@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
             len: {
               args: [4],
-              msg: 'Nome deve ter ao menos 4 caracteres'
+              msg: 'Name must have at least 4 characters'
             }
           }
       },
@@ -37,7 +37,7 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         isEmail: {
           args: true,
-          msg: 'E-mail inválido'
+          msg: 'Invalid e-mail'
         }
       }
     },
