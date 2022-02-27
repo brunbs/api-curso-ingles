@@ -26,11 +26,11 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
         validate: {
             len: {
-              args: [4],
-              msg: 'Name must have at least 4 characters'
+              args: [4,50],
+              msg: 'Name must have between 4 and 50 characters'
             }
-          }
-      },
+        }
+    },
     active: DataTypes.BOOLEAN,
     email: {
       type: DataTypes.STRING,
@@ -38,10 +38,22 @@ module.exports = (sequelize, DataTypes) => {
         isEmail: {
           args: true,
           msg: 'Invalid e-mail'
+        },
+        len: {
+          args: [4,50],
+          msg: 'Email must have between 4 and 50 characters'
         }
       }
     },
-    role: DataTypes.STRING
+    role: {
+      type: DataTypes.STRING,
+      validate: {
+        len: {
+          args: [4,50],
+          msg: 'Role must have between 4 and 50 characters'
+        }
+      }
+    }
   }, {
     sequelize,
     modelName: 'Person',

@@ -20,7 +20,15 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   Registration.init({
-    status: DataTypes.STRING
+    status: {
+      type: DataTypes.STRING,
+      validate: {
+        len: {
+          args: [4,50],
+          msg: 'Status must have between 4 and 50 characters'
+        }
+      }
+    }
   }, {
     sequelize,
     modelName: 'Registration',
