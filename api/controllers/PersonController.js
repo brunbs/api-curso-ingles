@@ -4,8 +4,23 @@ const peopleServices = new PeopleServices();
 class PersonController {
     static async getAllActivePeople(req, res) {
         try {
-            const allActivePeople = await peopleServices.getAllActivePeople();
-            return res.status(200).json(allActivePeople);
+            const pageAsNumber = Number.parseInt(req.query.page);
+            const sizeAsNumber = Number.parseInt(req.query.size);
+
+            let page = 0;
+            if (!Number.isNaN(pageAsNumber) && pageAsNumber > 0) {
+                page = pageAsNumber;
+            }
+
+            let size = 10;
+            if (!Number.isNaN(sizeAsNumber) && sizeAsNumber > 0 && sizeAsNumber < 10) {
+                size = sizeAsNumber;
+            }
+            const allActivePeople = await peopleServices.getAllActivePeople({}, page, size);
+            return res.status(200).json({
+                content: allActivePeople.rows,
+                totalPages: Math.ceil(allActivePeople.count / size)
+            })
         } catch (error) {
             return res.status(500).json(error.message);
         }

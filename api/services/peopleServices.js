@@ -7,8 +7,10 @@ class PeopleServices extends Services {
         this.registrations = new Services('Registration')
     }
 
-    async getAllActivePeople(where = {}) {
-        return database[this.modelName].findAll({ where: {...where}});
+    async getAllActivePeople(where = {}, page, size) {
+        const req_limit = size;
+        const req_offset = size * page;
+        return database[this.modelName].findAndCountAll({ where: {...where}, limit: req_limit, offset: req_offset});
     }
     
     async getAll(where = {}, page, size) {
