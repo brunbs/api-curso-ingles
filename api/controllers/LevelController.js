@@ -4,8 +4,25 @@ const levelsServices = new Services('Level');
 class LevelController {
     static async getAllLevels(req, res) {
         try {
-            const allLevels = await levelsServices.getAllData();
-            return res.status(200).json(allLevels);
+            const pageAsNumber = Number.parseInt(req.query.page);
+            const sizeAsNumber = Number.parseInt(req.query.size);
+
+            let page = 0;
+            if (!Number.isNaN(pageAsNumber) && pageAsNumber > 0) {
+                page = pageAsNumber;
+            }
+
+            let size = 10;
+            if (!Number.isNaN(sizeAsNumber) && sizeAsNumber > 0 && sizeAsNumber < 10) {
+                size = sizeAsNumber;
+            }
+
+            const allLevels = await levelsServices.getAllData({}, page, size);
+            
+            return res.status(200).json({
+                content: allLevels.rows,
+                totalPages: Math.ceil(allLevels.count / size)
+            });
         } catch (error) {
             return res.status(500).json(error.message);
         }

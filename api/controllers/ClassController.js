@@ -11,9 +11,26 @@ class ClassController {
         date_beginning || date_end ? where.starting_date = {} : null
         date_beginning ? where.starting_date[Op.gte] = date_beginning : null
         date_end ? where.starting_date[Op.lte] = date_end : null
+
+        const pageAsNumber = Number.parseInt(req.query.page);
+            const sizeAsNumber = Number.parseInt(req.query.size);
+
+            let page = 0;
+            if (!Number.isNaN(pageAsNumber) && pageAsNumber > 0) {
+                page = pageAsNumber;
+            }
+
+            let size = 10;
+            if (!Number.isNaN(sizeAsNumber) && sizeAsNumber > 0 && sizeAsNumber < 10) {
+                size = sizeAsNumber;
+            }
+
         try {
-            const allClasses = await classesServices.getAllData(where);
-            return res.status(200).json(allClasses);
+            const allClasses = await classesServices.getAllData(where, page, size);
+            return res.status(200).json({
+                content: allClasses.rows,
+                totalPages: Math.ceil(allClasses.count / size)
+            });
         } catch (error) {
             return res.status(500).json(error.message);
         }

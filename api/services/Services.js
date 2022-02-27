@@ -5,8 +5,10 @@ class Services {
         this.modelName = modelName;
     }
 
-    async getAllData(where = {}) {
-        return database[this.modelName].findAll({ where: { ...where } });
+    async getAllData(where = {}, page, size) {
+        const req_limit = size;
+        const req_offset = size * page;
+        return database[this.modelName].findAndCountAll({ where: { ...where }, limit: req_limit, offset: req_offset });
     };
 
     async getData(where ={}) {
