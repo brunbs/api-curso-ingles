@@ -16,7 +16,14 @@ class PersonController {
             if (!Number.isNaN(sizeAsNumber) && sizeAsNumber > 0 && sizeAsNumber < 10) {
                 size = sizeAsNumber;
             }
-            const allActivePeople = await peopleServices.getAllActivePeople({}, page, size);
+
+            const orderParam = req.query.order;
+            let order = 'ASC';
+            if(orderParam === 'DESC') {
+                order = orderParam;
+            }
+
+            const allActivePeople = await peopleServices.getAllActivePeople({}, [['id', order]], page, size);
             return res.status(200).json({
                 content: allActivePeople.rows,
                 totalPages: Math.ceil(allActivePeople.count / size)

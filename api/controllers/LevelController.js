@@ -17,7 +17,13 @@ class LevelController {
                 size = sizeAsNumber;
             }
 
-            const allLevels = await levelsServices.getAllData({}, page, size);
+            const orderParam = req.query.order;
+            let order = 'ASC';
+            if(orderParam === 'DESC') {
+                order = orderParam;
+            }
+
+            const allLevels = await levelsServices.getAllData({}, [['id', order]], page, size);
             
             return res.status(200).json({
                 content: allLevels.rows,

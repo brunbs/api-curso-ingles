@@ -25,8 +25,14 @@ class ClassController {
                 size = sizeAsNumber;
             }
 
+            const orderParam = req.query.order;
+            let order = 'ASC';
+            if(orderParam === 'DESC') {
+                order = orderParam;
+            }
+
         try {
-            const allClasses = await classesServices.getAllData(where, page, size);
+            const allClasses = await classesServices.getAllData(where, [['id', order]], page, size);
             return res.status(200).json({
                 content: allClasses.rows,
                 totalPages: Math.ceil(allClasses.count / size)
