@@ -13,10 +13,11 @@ class PeopleServices extends Services {
         return database[this.modelName].findAndCountAll({ where: {...where}, limit: req_limit, offset: req_offset});
     }
     
-    async getAll(where = {}, page, size) {
+    async getAll(where = {}, order, page, size) {
         const req_limit = size;
         const req_offset = size * page;
-        return database[this.modelName].scope('all').findAndCountAll({ where: {...where}, limit: req_limit, offset: req_offset })
+        const conditions = {where: {...where}, order: order, limit: req_limit, offset: req_offset};
+        return database[this.modelName].scope('all').findAndCountAll({ ...conditions })
     }
 
     async cancelPersonAndRegistrations(studentId) {

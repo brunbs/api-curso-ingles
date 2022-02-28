@@ -20,7 +20,7 @@ class PersonController {
             return res.status(200).json({
                 content: allActivePeople.rows,
                 totalPages: Math.ceil(allActivePeople.count / size)
-            })
+            });
         } catch (error) {
             return res.status(500).json(error.message);
         }
@@ -42,7 +42,13 @@ class PersonController {
                 size = sizeAsNumber;
             }
 
-            const allPeople = await peopleServices.getAll({}, page, size);
+            const orderParam = req.query.order;
+            let order = 'ASC';
+            if(orderParam === 'DESC') {
+                order = orderParam;
+            }
+
+            const allPeople = await peopleServices.getAll({}, [['id', order]], page, size);
             return res.status(200).json({
                 content: allPeople.rows,
                 totalPages: Math.ceil(allPeople.count / size)
