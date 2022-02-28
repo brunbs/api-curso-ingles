@@ -1,33 +1,19 @@
 const Services = require('../services/Services');
 const levelsServices = new Services('Level');
+const paginationValidator = require('./validation/paginationValidator');
 
 class LevelController {
     static async getAllLevels(req, res) {
         try {
             const pageAsNumber = Number.parseInt(req.query.page);
             const sizeAsNumber = Number.parseInt(req.query.size);
+            const pagination = paginationValidator.paginationValidatorBuilder(pageAsNumber, sizeAsNumber, req.query.order);
 
-            let page = 0;
-            if (!Number.isNaN(pageAsNumber) && pageAsNumber > 0) {
-                page = pageAsNumber;
-            }
-
-            let size = 10;
-            if (!Number.isNaN(sizeAsNumber) && sizeAsNumber > 0 && sizeAsNumber < 10) {
-                size = sizeAsNumber;
-            }
-
-            const orderParam = req.query.order;
-            let order = 'ASC';
-            if(orderParam === 'DESC') {
-                order = orderParam;
-            }
-
-            const allLevels = await levelsServices.getAllData({}, [['id', order]], page, size);
+            const allLevels = await levelsServices.getAllData({}, [['id', pagination.order]], pagination.page, pagination.size);
             
             return res.status(200).json({
                 content: allLevels.rows,
-                totalPages: Math.ceil(allLevels.count / size)
+                totalPages: Math.ceil(allLevels.count / pagination.size)
             });
         } catch (error) {
             return res.status(500).json(error.message);
@@ -85,6 +71,7 @@ class LevelController {
             res.status(500).json(error.message);
         }
     }
+
 }
 
 module.exports = LevelController;

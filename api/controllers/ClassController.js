@@ -1,6 +1,7 @@
 const { ClassesServices } = require('../services');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
+const paginationValidator = require('./validation/paginationValidator');
 
 const classesServices = new ClassesServices();
 
@@ -13,29 +14,14 @@ class ClassController {
         date_end ? where.starting_date[Op.lte] = date_end : null
 
         const pageAsNumber = Number.parseInt(req.query.page);
-            const sizeAsNumber = Number.parseInt(req.query.size);
-
-            let page = 0;
-            if (!Number.isNaN(pageAsNumber) && pageAsNumber > 0) {
-                page = pageAsNumber;
-            }
-
-            let size = 10;
-            if (!Number.isNaN(sizeAsNumber) && sizeAsNumber > 0 && sizeAsNumber < 10) {
-                size = sizeAsNumber;
-            }
-
-            const orderParam = req.query.order;
-            let order = 'ASC';
-            if(orderParam === 'DESC') {
-                order = orderParam;
-            }
+        const sizeAsNumber = Number.parseInt(req.query.size);
+        const pagination = paginationValidator.paginationValidatorBuilder(pageAsNumber, sizeAsNumber, req.query.order);
 
         try {
-            const allClasses = await classesServices.getAllData(where, [['id', order]], page, size);
+            const allClasses = await classesServices.getAllData(where, [['id', pagination.order]], pagination.page, pagination.size);
             return res.status(200).json({
                 content: allClasses.rows,
-                totalPages: Math.ceil(allClasses.count / size)
+                totalPages: Math.ceil(allClasses.count / pagination.size)
             });
         } catch (error) {
             return res.status(500).json(error.message);

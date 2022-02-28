@@ -1,32 +1,18 @@
 const { PeopleServices } = require('../services');
 const peopleServices = new PeopleServices();
+const paginationValidator = require('./validation/paginationValidator');
 
 class PersonController {
     static async getAllActivePeople(req, res) {
         try {
             const pageAsNumber = Number.parseInt(req.query.page);
             const sizeAsNumber = Number.parseInt(req.query.size);
+            const pagination = paginationValidator.paginationValidatorBuilder(pageAsNumber, sizeAsNumber, req.query.order);
 
-            let page = 0;
-            if (!Number.isNaN(pageAsNumber) && pageAsNumber > 0) {
-                page = pageAsNumber;
-            }
-
-            let size = 10;
-            if (!Number.isNaN(sizeAsNumber) && sizeAsNumber > 0 && sizeAsNumber < 10) {
-                size = sizeAsNumber;
-            }
-
-            const orderParam = req.query.order;
-            let order = 'ASC';
-            if(orderParam === 'DESC') {
-                order = orderParam;
-            }
-
-            const allActivePeople = await peopleServices.getAllActivePeople({}, [['id', order]], page, size);
+            const allActivePeople = await peopleServices.getAllActivePeople({}, [['id', pagination.order]], pagination.page, pagination.size);
             return res.status(200).json({
                 content: allActivePeople.rows,
-                totalPages: Math.ceil(allActivePeople.count / size)
+                totalPages: Math.ceil(allActivePeople.count / pagination.size)
             });
         } catch (error) {
             return res.status(500).json(error.message);
@@ -38,27 +24,12 @@ class PersonController {
         try {
             const pageAsNumber = Number.parseInt(req.query.page);
             const sizeAsNumber = Number.parseInt(req.query.size);
+            const pagination = paginationValidator.paginationValidatorBuilder(pageAsNumber, sizeAsNumber, req.query.order);
 
-            let page = 0;
-            if (!Number.isNaN(pageAsNumber) && pageAsNumber > 0) {
-                page = pageAsNumber;
-            }
-
-            let size = 10;
-            if (!Number.isNaN(sizeAsNumber) && sizeAsNumber > 0 && sizeAsNumber < 10) {
-                size = sizeAsNumber;
-            }
-
-            const orderParam = req.query.order;
-            let order = 'ASC';
-            if(orderParam === 'DESC') {
-                order = orderParam;
-            }
-
-            const allPeople = await peopleServices.getAll({}, [['id', order]], page, size);
+            const allPeople = await peopleServices.getAll({}, [['id', pagination.order]], pagination.page, pagination.size);
             return res.status(200).json({
                 content: allPeople.rows,
-                totalPages: Math.ceil(allPeople.count / size)
+                totalPages: Math.ceil(allPeople.count / pagination.size)
             })
         } catch (error) {
             return res.status(500).json(error.message);
