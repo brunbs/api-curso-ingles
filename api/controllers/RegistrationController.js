@@ -3,13 +3,13 @@ const registrationsServices = new RegistrationsServices();
 
 class RegistrationController {
 
-    static async getOneRegistration(req, res) {
+    static async getOneRegistration(req, res, next) {
         const { studentId, registrationId } = req.params;
         try {
             const registration = await registrationsServices.getData({id: registrationId, student_id: studentId});
             return res.status(200).json(registration);
         } catch (error) {
-            return res.status(500).send(error.message);
+            next (error);
         }
     }
     

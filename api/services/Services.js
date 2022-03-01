@@ -1,4 +1,5 @@
 const database = require('../models');
+const NotFoundException = require('./exceptions/NotFoundException');
 
 class Services {
     constructor(modelName) {
@@ -13,7 +14,11 @@ class Services {
     };
 
     async getData(where ={}) {
-        return database[this.modelName].findOne({ where: { ...where } });
+        const data = await database[this.modelName].findOne({ where: { ...where } });
+        if(!data) {
+            throw new NotFoundException(this.modelName);
+        }
+        return data;
     }
 
     async createData(dataToCreate) {

@@ -20,13 +20,13 @@ class LevelController {
         }
     }
 
-    static async getOneLevel(req, res) {
+    static async getOneLevel(req, res, next) {
         try {
             const { id } = req.params;
             const level = await levelsServices.getData({ id });
             return res.status(200).json(level);
         } catch (error) {
-            return res.status(500).json(error.message);
+            next (error);
         }
     }
 

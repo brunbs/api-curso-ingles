@@ -1,8 +1,11 @@
 const { PeopleServices } = require('../services');
 const peopleServices = new PeopleServices();
 const paginationValidator = require('./validation/paginationValidator');
+const NotFoundException = require('../services/exceptions/NotFoundException');
+const WrongFormatException = require('../services/exceptions/WrongFormatException');
 
 class PersonController {
+
     static async getAllActivePeople(req, res) {
         try {
             const pageAsNumber = Number.parseInt(req.query.page);
@@ -37,13 +40,16 @@ class PersonController {
         
     }
 
-    static async getOnePerson(req, res) {
-        const { id } = req.params;
+    static async getOnePerson(req, res, next) {
+        const id = Number.parseInt(req.params.id);
+        if (Number.isNaN(id)) {
+            next(new WrongFormatException('id'));
+        }
         try {
             const person = await peopleServices.getData({id});
             return res.status(200).json(person);
         } catch (error) {
-            return res.status(500).send(error.message);
+            next (error);
         }
     }
 

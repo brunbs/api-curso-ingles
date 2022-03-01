@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const PersonController = require('../controllers/PersonController');
 const RegistrationController = require('../controllers/RegistrationController');
+const ErrorHandler = require('../error/ErrorHandler');
 
 const router = Router()
 
@@ -20,5 +21,5 @@ router
     .put('/people/:id', PersonController.updatePerson)
     .delete('/people/:studentId/registrations/:registrationId', RegistrationController.deleteRegistration)
     .delete('/people/:id', PersonController.deletePerson)
-
+    
 module.exports = router;

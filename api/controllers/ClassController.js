@@ -28,13 +28,13 @@ class ClassController {
         }
     }
 
-    static async getOneClass(req, res) {
+    static async getOneClass(req, res, next) {
         const { id } = req.params;
         try {
             const foundClass = await classesServices.getData({ id });
             return res.status(200).json(foundClass);
         } catch (error) {
-            return res.status(500).json(error.message);
+            next (error);
         }
     }
 
