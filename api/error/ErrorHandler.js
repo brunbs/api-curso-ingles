@@ -1,6 +1,7 @@
 module.exports = (error, req, res, next) => {
+    const status = error.status || 500;
     res
-      .status(error.status)
+      .status(status)
       .send(
         {
           message: error.message,
