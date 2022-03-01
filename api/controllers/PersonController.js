@@ -49,17 +49,18 @@ class PersonController {
             const person = await peopleServices.getData({id});
             return res.status(200).json(person);
         } catch (error) {
-            next (error);
+            next(error);
         }
     }
 
-    static async createPerson(req, res) {
+    static async createPerson(req, res, next) {
         const newPerson = req.body;
+        console.log(newPerson.email);
         try {
-            const createdPerson = await peopleServices.createData(newPerson);
+            const createdPerson = await peopleServices.createPerson(newPerson);
             return res.status(201).json(createdPerson);
         } catch (error) {
-            return res.status(500).json(error.message);
+            next(error);
         }
     }
 

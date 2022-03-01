@@ -1,5 +1,6 @@
 const Services = require('./Services');
 const database = require('../models');
+const EmailAlreadyInUseException = require('./exceptions/EmailAlreadyInUseException');
 
 class PeopleServices extends Services {
     constructor() {
@@ -31,6 +32,16 @@ class PeopleServices extends Services {
     async getStudentRegistrations(where ={}) {
         const registrations = await database[this.modelName].findOne({ where: { ...where } } );
         return registrations.getConfirmedRegistrations();
+    }
+
+    async createPerson(person) {
+        const existingPerson = await database['Person'].findOne({where: { email: person.email } })
+        if (!existingPerson) {
+            return database['Person'].create(person);
+        }
+        else {
+            throw new EmailAlreadyInUseException();
+        }
     }
     
 }
