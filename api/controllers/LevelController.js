@@ -1,6 +1,7 @@
 const Services = require('../services/Services');
 const levelsServices = new Services('Level');
 const paginationValidator = require('./validation/paginationValidator');
+const WrongFormatException = require('./exceptions/WrongFormatException');
 
 class LevelController {
     static async getAllLevels(req, res) {
@@ -23,6 +24,9 @@ class LevelController {
     static async getOneLevel(req, res, next) {
         try {
             const { id } = req.params;
+            if (Number.isNaN(id)) {
+                next(new WrongFormatException('id'));
+            }
             const level = await levelsServices.getData({ id });
             return res.status(200).json(level);
         } catch (error) {

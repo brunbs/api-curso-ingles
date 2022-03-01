@@ -2,6 +2,7 @@ const { ClassesServices } = require('../services');
 const Sequelize = require('sequelize');
 const Op = Sequelize.Op;
 const paginationValidator = require('./validation/paginationValidator');
+const WrongFormatException = require('./exceptions/WrongFormatException');
 
 const classesServices = new ClassesServices();
 
@@ -29,8 +30,11 @@ class ClassController {
     }
 
     static async getOneClass(req, res, next) {
-        const { id } = req.params;
         try {
+            const { id } = req.params;
+            if (Number.isNaN(id)) {
+                next(new WrongFormatException('id'));
+            }
             const foundClass = await classesServices.getData({ id });
             return res.status(200).json(foundClass);
         } catch (error) {
